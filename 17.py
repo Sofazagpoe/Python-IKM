@@ -1,5 +1,3 @@
-import os
-
 class Node:
     def __init__(self, data):
         self.data = data
@@ -76,8 +74,11 @@ class Tree:
 
 
 def read_data(filename):
-    with open(filename, 'r', encoding='utf-8') as f:
-        lines = [line.strip() for line in f if line.strip()]
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            lines = [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        raise ValueError(f"Файл '{filename}' не найден.")
 
     if not lines:
         raise ValueError("Файл пуст")
@@ -124,15 +125,11 @@ def main():
             if not filename:
                 filename = "input.txt"
 
-            if not os.path.exists(filename):
-                print(f"Ошибка: файл '{filename}' не найден.")
-                continue
-
             try:
                 result = solve(filename)
                 print(f"\nРезультат: минимальное количество извинений = {result}")
             except Exception as e:
-                print(f"Ошибка при обработке файла: {e}")
+                print(f"Ошибка: {e}")
 
         elif choice == '2':
             print("\nПример входного файла (сохраните как input.txt):")
